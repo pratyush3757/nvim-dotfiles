@@ -1,20 +1,38 @@
-require("mason").setup()
-
 local lsp = require('lsp-zero')
-lsp.preset('recommended')
+lsp.on_attach(function(client, bufnr)
+  lsp.default_keymaps({buffer = bufnr})
+end)
 
-lsp.configure('rust_analyzer', {
-    force_setup = true,
-    settings = {
-        ["rust-analyzer"] = {
-            checkOnSave = {
-                command = "clippy",
-            },
+-- lsp.configure('rust_analyzer', {
+--     force_setup = true,
+--     settings = {
+--         ["rust-analyzer"] = {
+--             checkOnSave = {
+--                 command = "clippy",
+--             },
+--         },
+--     },
+-- })
+
+require("mason").setup()
+require('mason-lspconfig').setup({
+  handlers = {
+    -- this first function is the "default handler"
+    -- it applies to every language server without a "custom handler"
+    function(server_name)
+      require('lspconfig')[server_name].setup({})
+    end,
+
+    -- this is the "custom handler" for `example_server`
+    rust_analyzer = function()
+      require('lspconfig').rust_analyzer.setup({
+        checkOnSave = {
+          command = "clippy",
         },
-    },
+      })
+    end,
+  },
 })
-
-lsp.setup()
 
 local cmp = require("cmp")
 
