@@ -25,6 +25,7 @@ return require('packer').startup(function(use)
     -- Color Schemes
     use {
         {'rakr/vim-one'},
+        {'catppuccin/nvim', as = 'catppuccin' },
         {'pappasam/papercolor-theme-slim'},
         {'folke/tokyonight.nvim'},
         {'kaicataldo/material.vim'},
